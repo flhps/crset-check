@@ -1,2 +1,2 @@
-export { isRevoked } from './statusCheck.ts';
+export { isRevoked } from './StatusCheck.ts';
 export { sum } from './sum.ts';
