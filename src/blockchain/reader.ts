@@ -46,13 +46,14 @@ function getBlobDataFromSenderAddress(senderAddress: string){
     infuraProvider.getTransaction(latestTxHash).then((tx) => {
       const blobVersionedHash = tx!.blobVersionedHashes![0];
       console.log(blobVersionedHash);
-      //TODO: fetch blob data using some API - but all the APIs i know don't support sepolia
 
-      // this should work on the mainchain instead of sepolia
-      // fetch(`https://api.blobscan.com/blobs/${blobVersionedHash}/data`).then((response) => {
-      //   console.log(response);
-      //   return blobHexToString(response.text);
-      // })
+      // get blob data by the blobVersionedHash using the blobscan API, then translate it back to a string
+      fetch(`https://api.sepolia.blobscan.com/blobs/${blobVersionedHash}/data`).then((response) => {
+        response.text().then((data) => {
+          const finalData = blobHexToString(blobHexToString(data.replace(/['"]+/g, '')));
+          console.log(finalData);
+        });
+      })
     });
   });
 };
