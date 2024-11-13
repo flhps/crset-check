@@ -1,8 +1,15 @@
-import { Alchemy, Network } from 'alchemy-sdk';
+import {
+  Alchemy,
+  AssetTransfersCategory,
+  Network,
+  SortingOrder,
+} from 'alchemy-sdk';
 import dotenv from 'dotenv';
 import { ethers } from 'ethers';
+
 dotenv.config({ path: '../../.env' });
 
+// use wrapped Infura API for getting full transaction-data
 let infuraProvider = new ethers.InfuraProvider(
   'sepolia',
   process.env.INFURA_API_KEY,
@@ -27,31 +34,37 @@ export function blobHexToString(blobHex: string) {
 export async function getBlobDataFromSenderAddress(
   senderAddress: string,
 ): Promise<string> {
+  // use Alchemy's Transfers API to get fetch historical transactions of an address
   const config = {
     apiKey: process.env.ALCHEMY_API_KEY,
     network: Network.ETH_SEPOLIA,
   };
   const alchemy = new Alchemy(config);
-
   const transfers = await alchemy.core
-    // @ts-ignore
     .getAssetTransfers({
       fromAddress: senderAddress,
       toAddress: senderAddress,
-      category: ['external'],
-      order: 'desc',
+      category: [AssetTransfersCategory.EXTERNAL],
+      order: SortingOrder.DESCENDING,
+      withMetadata: true,
+      excludeZeroValue: false,
     });
 
-  const latestTxHash = transfers.transfers[0]!.hash;
-  const tx = await infuraProvider.getTransaction(latestTxHash);
-  const blobVersionedHash = tx?.blobVersionedHashes![0];
+  // Retrieve the latest blob transaction and its blobVersionedHash(s)
+  let blobVersionedHash = null;
+  let i = 0;
+  //TODO: account for multiple blobs in a single transaction
+  while (!blobVersionedHash) {
+    const latestTxHash = transfers.transfers[i]!.hash;
+    const tx = await infuraProvider.getTransaction(latestTxHash);
+    blobVersionedHash = tx?.blobVersionedHashes ? tx?.blobVersionedHashes[0] : null;
+    i++;
+  }
 
+  // Fetch the blob data using API of choice and convert it back to a string
   const blobData = await fetch(
     `${process.env.BLOBSCAN_API_URL}${blobVersionedHash}/data`,
-  ).then((response) => {
-    return response.text();
-  });
-
+  ).then((response) => response.text());
   const preProcessedBlobData = blobHexToString(blobData.replace(/['"]+/g, ''));
   const blobString = blobHexToString(preProcessedBlobData);
 
