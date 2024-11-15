@@ -19,7 +19,8 @@
     /* Transpile with TS */
     "module": "NodeNext",
     "outDir": "dist",
-    "rootDir": "src",
+    // TODO: Uncomment once padded-bloom-filter-cascade package is published
+    // "rootDir": "src",
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,

@@ -1,4 +1,7 @@
-import { VerifiableCredential } from '@digitalcredentials/vc-data-model';
+import {
+  CompactJWT,
+  VCDIVerifiableCredential,
+} from '@digitalcredentials/vc-data-model/dist/VerifiableCredential.js';
 
 export interface CredentialStatus {
   id: string;
@@ -7,6 +10,17 @@ export interface CredentialStatus {
   statusPublisher: string; // CAIP-10 account ID
 }
 
-export type VerifiableCredentialWithStatus = VerifiableCredential & {
+// Remove the revocation list-based credential status
+export type VerifiableCredentialWithoutStatus = Omit<
+  VCDIVerifiableCredential,
+  'credentialStatus'
+>;
+
+export interface JSONLDVerifiableCredential
+  extends VerifiableCredentialWithoutStatus {
   credentialStatus: CredentialStatus;
-};
+}
+
+export type VerifiableCredentialWithStatus =
+  | CompactJWT
+  | JSONLDVerifiableCredential;
