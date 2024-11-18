@@ -1,14 +1,14 @@
 import { AccountId } from 'caip';
-// import bf from '../padded-bloom-filter-cascade/src/index.ts'; // TODO: replace with actual import path, for now configure according to your local setup of padded-bloom-filter-cascade
-import bf from '../padded-bloom-filter-cascade/src/index.ts';
+import dotenv from 'dotenv';
+import { isAddress } from 'ethers';
+import {
+  fromDataHexString,
+  isInBFC,
+} from '../../../padded-bloom-filter-cascade/src/index.ts'; // TODO: replace with actual import path, for now configure according to your local setup of padded-bloom-filter-cascade
 import { VerifiableCredentialWithStatus as VerifiableCredential } from '../types/verifiableCredential.ts';
 import { extractCredentialStatus } from '../utils/extractCredentialStatus.ts';
 import { getBlobDataFromSenderAddress } from '../utils/reader.ts';
-import { isAddress } from 'ethers';
-import dotenv from 'dotenv';
-import * as fs from 'node:fs';
-dotenv.config({ path: "../../.env" });
-
+dotenv.config({ path: '../../.env' });
 
 /**
  * Checks if a Verifiable Credential (VC) has been revoked via bloom filter cascade.
@@ -47,14 +47,15 @@ export async function isRevoked(
 
   // Get blob data from sender address
   // TODO: incorporate rpc URL
-  const blobData = await getBlobDataFromSenderAddress(accountAddress, process.env.INFURA_API_KEY!, process.env.ALCHEMY_API_KEY!);
+  const blobData = await getBlobDataFromSenderAddress(
+    accountAddress,
+    process.env.INFURA_API_KEY!,
+    process.env.ALCHEMY_API_KEY!,
+  );
 
   // Reconstruct bloom filter cascade from blob data
-  const bfcascade = bf.fromDataHexString(blobData);
-  const filter = bfcascade[0];
-  const salt=bfcascade[1]
+  const [filter, salt] = fromDataHexString(blobData);
 
   // Check if credential is revoked
-  return !bf.isInBFC(credentialId, filter, salt);
+  return !isInBFC(credentialId, filter, salt);
 }
-// console.log(await isRevoked());
