@@ -9,23 +9,20 @@ import { ethers } from 'ethers';
 
 dotenv.config({ path: '../../.env' });
 
-// use wrapped Infura API for getting full transaction-data
-let infuraProvider = new ethers.InfuraProvider(
-  'sepolia',
-  process.env.INFURA_API_KEY,
-);
-
-export function blobHexToString(blobHex: string) {
+export function reconstructBlobData(data: string) {
+  /**
+   * Reconstructs the original data from a hex string.
+   * @param data - The hex string to be decoded.
+   * @returns The original data as a string.
+   */
   // Remove the '0x' prefix if it exists (just in case)
-  if (blobHex.startsWith('0x')) {
-    blobHex = blobHex.slice(2);
+  if (data.startsWith('0x')) {
+    data = data.slice(2);
   }
-
   // Convert hex string to a Uint8Array
   const byteArray = new Uint8Array(
-    blobHex.match(/.{1,2}/g)!.map((byte: string) => parseInt(byte, 16)),
+    data.match(/.{1,2}/g)!.map((byte: string) => parseInt(byte, 16)),
   );
-
   // Decode the Uint8Array back to a string
   const decoder = new TextDecoder();
   return decoder.decode(byteArray);
@@ -33,10 +30,25 @@ export function blobHexToString(blobHex: string) {
 
 export async function getBlobDataFromSenderAddress(
   senderAddress: string,
+  ethersProviderAPIKey: string,
+  alchemyAPIKey: string,
 ): Promise<string> {
+  /**
+   * Fetches the blob data from the sender address.
+   * @param senderAddress - The sender address to fetch the blob data from.
+   * @returns The original data as a string.
+   */
+  // TODO: adapt for >6 blobs => multiple transactions
+  // TODO: allow user to choose provider
+  // use wrapped Infura API for getting full transaction-data
+  let infuraProvider = new ethers.InfuraProvider(
+    'sepolia',
+    ethersProviderAPIKey
+  );
+
   // use Alchemy's Transfers API to get fetch historical transactions of an address
   const config = {
-    apiKey: process.env.ALCHEMY_API_KEY,
+    apiKey: alchemyAPIKey,
     network: Network.ETH_SEPOLIA,
   };
   const alchemy = new Alchemy(config);
@@ -46,7 +58,6 @@ export async function getBlobDataFromSenderAddress(
       toAddress: senderAddress,
       category: [AssetTransfersCategory.EXTERNAL],
       order: SortingOrder.DESCENDING,
-      withMetadata: true,
       excludeZeroValue: false,
     });
 
@@ -70,11 +81,8 @@ export async function getBlobDataFromSenderAddress(
     // Remove the '0x' prefix and starting/trailing quotation marks
     temp=temp+(blobData.replace(/['"]+/g, '').slice(2));
   }
-  const preProcessedBlobData = blobHexToString(temp);
-
-  const blobString = blobHexToString(preProcessedBlobData);
-
+  const blobString = reconstructBlobData(temp);
   return blobString;
 }
 
-console.log(await getBlobDataFromSenderAddress(process.env.ADDRESS!));
+// console.log(await getBlobDataFromSenderAddress(process.env.ADDRESS!));
