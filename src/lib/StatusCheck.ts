@@ -8,7 +8,7 @@ import {
 import { VerifiableCredentialWithStatus as VerifiableCredential } from '../types/verifiableCredential.ts';
 import { extractCredentialStatus } from '../utils/extractCredentialStatus.ts';
 import { getBlobDataFromSenderAddress } from '../utils/reader.ts';
-dotenv.config({ path: '../../.env' });
+// dotenv.config({ path: '../../.env' });
 
 /**
  * Checks if a Verifiable Credential (VC) has been revoked via bloom filter cascade.
@@ -37,10 +37,11 @@ export async function isRevoked(
   // Check if VC is JSON-LD or JWT, handle accordingly
   const credentialStatus = extractCredentialStatus(vc);
   const credentialId = credentialStatus.id;
-
+  // const credentialId = "urn:eip155:1:0x32328bfaea51ce120db44f7755a1170e9cc43653:aa603829bbe0e77c446e90798535645af4c34c89337dcc1e6fa4bec7f4408daa0c7309c577b27d0145cfb599d0fd8d385d562c73e9878f33094647f8037d1cf8";
   // Get account address from CAIP-10 account ID in credential status
-  const account = new AccountId(credentialStatus.statusPublisher).toJSON();
-  const accountAddress = account.address;
+  const account = credentialId.split(':')[3];
+  const accountAddress = account;
+  // const accountAddress = process.env.ADDRESS;
   if (!isAddress(accountAddress)) {
     throw new Error('Invalid Ethereum address');
   }
@@ -59,3 +60,5 @@ export async function isRevoked(
   // Check if credential is revoked
   return !isInBFC(credentialId, filter, salt);
 }
+
+// isRevoked({} as VerifiableCredential, new URL('https://example.com')).then((isRevoked) => {console.log(isRevoked)});

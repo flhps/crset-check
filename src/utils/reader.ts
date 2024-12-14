@@ -6,6 +6,8 @@ import {
 } from 'alchemy-sdk';
 import dotenv from 'dotenv';
 import { ethers } from 'ethers';
+import Moralis from "moralis";
+import { EvmChain } from "@moralisweb3/common-evm-utils";
 
 dotenv.config({ path: '../../.env' });
 
@@ -52,25 +54,53 @@ export async function getBlobDataFromSenderAddress(
     network: Network.ETH_SEPOLIA,
   };
   const alchemy = new Alchemy(config);
-  const transfers = await alchemy.core
-    .getAssetTransfers({
-      fromAddress: senderAddress,
-      toAddress: senderAddress,
-      category: [AssetTransfersCategory.EXTERNAL],
-      order: SortingOrder.DESCENDING,
-      excludeZeroValue: false,
-    });
 
-  // Retrieve the latest blob transaction and its blobVersionedHash(s)
+  await Moralis.start({
+    apiKey: process.env.MORALIS_API_KEY,
+    // ...and any other configuration
+  })
+
+  let transfers;
   let blobVersionedHashes: string | any[] = [];
-  let i = 0;
-  // Account for multiple blobs in a single transaction
-  while (blobVersionedHashes.length === 0) {
-    const latestTxHash = transfers.transfers[i]!.hash;
-    const tx = await infuraProvider.getTransaction(latestTxHash);
-    blobVersionedHashes = tx?.blobVersionedHashes ? tx?.blobVersionedHashes: [];
-    i++;
-  }
+
+  // try {
+    console.log("before getAssetTransfers, "+senderAddress);
+    // transfers = await alchemy.core
+    //   .getAssetTransfers({
+    //     fromAddress: senderAddress,
+    //     toAddress: senderAddress,
+    //     category: [AssetTransfersCategory.EXTERNAL],
+    //     order: SortingOrder.DESCENDING,
+    //     excludeZeroValue: false,
+    //   });
+  transfers = await Moralis.EvmApi.transaction.getWalletTransactions({
+    address: senderAddress,
+    chain: EvmChain.SEPOLIA,
+    order: "DESC",
+  });
+    // if (transfers.transfers.length === 0) {
+    //   throw new Error('No transfers found');
+    // }
+    console.log("after getAssetTransfers");
+    // Retrieve the latest blob transaction and its blobVersionedHash(s)
+    let i = 0;
+    // Account for multiple blobs in a single transaction
+    while (blobVersionedHashes.length === 0) {
+      const latestTxHash = transfers.result[i]?.hash;
+      if (latestTxHash) {
+        const tx = await infuraProvider.getTransaction(latestTxHash);
+        if (tx?.to?.toLowerCase() == senderAddress.toLowerCase()) {
+          blobVersionedHashes = tx?.blobVersionedHashes ? tx?.blobVersionedHashes : [];
+        }
+        i++;
+      } else {
+        throw new Error('No transactions found for address '+senderAddress);
+      }
+    }
+
+  // } catch (error) {
+  //   console.error(error);
+  // }
 
   // Fetch the blob data using API of choice and convert it back to a string
   let temp= "";
