@@ -55,10 +55,13 @@ export async function getBlobDataFromSenderAddress(
   };
   const alchemy = new Alchemy(config);
 
-  await Moralis.start({
-    apiKey: process.env.MORALIS_API_KEY,
-    // ...and any other configuration
-  })
+  if (!Moralis.Core.isStarted) {
+    await Moralis.start({
+      apiKey: process.env.MORALIS_API_KEY,
+      // ...and any other configuration
+    })
+  }
+
 
   let transfers;
   let blobVersionedHashes: string | any[] = [];
