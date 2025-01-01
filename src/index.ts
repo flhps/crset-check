@@ -1,2 +1,3 @@
-export { isRevoked } from './StatusCheck.ts';
-export { sum } from './sum.ts';
+export * from './types/verifiableCredential.ts';
+export * from './utils/extractCredentialStatus.ts';
+export * from './lib/StatusCheck.ts';
