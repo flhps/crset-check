@@ -17,7 +17,7 @@
     "noImplicitOverride": true,
 
     /* Transpile with TS */
-    "module": "NodeNext",
+    "module": "CommonJS",
     "outDir": "dist",
     // TODO: Uncomment once padded-bloom-filter-cascade package is published
     // "rootDir": "src",

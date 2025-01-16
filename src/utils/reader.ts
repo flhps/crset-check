@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import { ethers } from 'ethers';
 import Moralis from "moralis";
 import { EvmChain } from "@moralisweb3/common-evm-utils";
+import {EventEmitter} from 'events';
 
 dotenv.config({ path: '../../.env' });
 
@@ -34,6 +35,7 @@ export async function getBlobDataFromSenderAddress(
   senderAddress: string,
   ethersProviderAPIKey: string,
   alchemyAPIKey: string,
+  emitter: EventEmitter
 ): Promise<string> {
   /**
    * Fetches the blob data from the sender address.
@@ -68,6 +70,7 @@ export async function getBlobDataFromSenderAddress(
 
   // try {
     console.log("before getAssetTransfers, "+senderAddress);
+    emitter.emit('progress', {step: 'getAssetTransfers', status: 'started'});
     // transfers = await alchemy.core
     //   .getAssetTransfers({
     //     fromAddress: senderAddress,
@@ -85,8 +88,10 @@ export async function getBlobDataFromSenderAddress(
     //   throw new Error('No transfers found');
     // }
     console.log("after getAssetTransfers");
+    emitter.emit('progress', {step: 'getAssetTransfers', status: 'completed', transferCount: transfers.result.length});
     // Retrieve the latest blob transaction and its blobVersionedHash(s)
     let i = 0;
+    emitter.emit('progress', {step: 'getBlobVersionedHashes', status: 'started'});
     // Account for multiple blobs in a single transaction
     while (blobVersionedHashes.length === 0) {
       const latestTxHash = transfers.result[i]?.hash;
@@ -100,12 +105,14 @@ export async function getBlobDataFromSenderAddress(
         throw new Error('No transactions found for address '+senderAddress);
       }
     }
+    emitter.emit('progress', {step: 'getBlobVersionedHashes', status: 'completed', blobCount: blobVersionedHashes.length});
 
   // } catch (error) {
   //   console.error(error);
   // }
 
   // Fetch the blob data using API of choice and convert it back to a string
+  emitter.emit('progress', {step: 'fetchAndConcatBlobData', status: 'started'});
   let temp= "";
   for (const blobVersionedHash of blobVersionedHashes) {
     const blobData = await fetch(
@@ -114,7 +121,10 @@ export async function getBlobDataFromSenderAddress(
     // Remove the '0x' prefix and starting/trailing quotation marks
     temp=temp+(blobData.replace(/['"]+/g, '').slice(2));
   }
+  emitter.emit('progress', {step: 'fetchAndConcatBlobData', status: 'completed'});
+  emitter.emit('progress', {step: 'reconstructBlobData', status: 'started'});
   const blobString = reconstructBlobData(temp);
+  emitter.emit('progress', {step: 'reconstructBlobData', status: 'completed'});
   return blobString;
 }
 
