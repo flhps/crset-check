@@ -44,7 +44,7 @@ export async function isRevoked(
   // Get account address from CAIP-10 account ID in credential status
   const account = credentialId.split(':')[3];
   const accountAddress = account;
-  emitter.emit('progress', {step: 'extractPublisherAddress', status: 'completed', address: accountAddress});
+  emitter.emit('progress', {step: 'extractPublisherAddress', status: 'completed', additionalMetrics: {address: accountAddress}});
   // const accountAddress = process.env.ADDRESS;
   console.log("Account address: "+accountAddress);
   if (!isAddress(accountAddress)) {
@@ -63,10 +63,10 @@ export async function isRevoked(
   // Reconstruct bloom filter cascade from blob data
   emitter.emit('progress', {step: 'reconstructBFC', status: 'started'});
   const [filter, salt] = fromDataHexString(blobData);
-  emitter.emit('progress', {step: 'reconstructBFC', status: 'completed', levelCount: filter.length});
+  emitter.emit('progress', {step: 'reconstructBFC', status: 'completed', additionalMetrics: {levelCount: filter.length}});
   emitter.emit('progress', {step: 'checkRevocation', status: 'started'});
   const isRevoked = !isInBFC(credentialId, filter, salt);
-  emitter.emit('progress', {step: 'checkRevocation', status: 'completed', isRevoked: isRevoked});
+  emitter.emit('progress', {step: 'checkRevocation', status: 'completed', additionalMetrics: {isRevoked: isRevoked}});
   // Check if credential is revoked
   return isRevoked;
 }

@@ -88,7 +88,7 @@ export async function getBlobDataFromSenderAddress(
     //   throw new Error('No transfers found');
     // }
     console.log("after getAssetTransfers");
-    emitter.emit('progress', {step: 'getAssetTransfers', status: 'completed', transferCount: transfers.result.length});
+    emitter.emit('progress', {step: 'getAssetTransfers', status: 'completed', additionalMetrics: {transferCount: transfers.result.length}});
     // Retrieve the latest blob transaction and its blobVersionedHash(s)
     let i = 0;
     emitter.emit('progress', {step: 'getBlobVersionedHashes', status: 'started'});
@@ -105,7 +105,7 @@ export async function getBlobDataFromSenderAddress(
         throw new Error('No transactions found for address '+senderAddress);
       }
     }
-    emitter.emit('progress', {step: 'getBlobVersionedHashes', status: 'completed', blobCount: blobVersionedHashes.length});
+    emitter.emit('progress', {step: 'getBlobVersionedHashes', status: 'completed', additionalMetrics: {txHash: transfers.result[i-1]?.hash, blobCount: blobVersionedHashes.length, firstBlobVersionedHash: blobVersionedHashes[0]}});
 
   // } catch (error) {
   //   console.error(error);
