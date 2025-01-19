@@ -9,6 +9,7 @@ import { ethers } from 'ethers';
 import Moralis from "moralis";
 import { EvmChain } from "@moralisweb3/common-evm-utils";
 import {EventEmitter} from 'events';
+import {StatusCheckOptions} from "../lib/StatusCheck.ts";
 
 dotenv.config({ path: '../../.env' });
 
@@ -35,7 +36,7 @@ export async function getBlobDataFromSenderAddress(
   senderAddress: string,
   ethersProviderAPIKey: string,
   alchemyAPIKey: string,
-  emitter: EventEmitter
+  options?: StatusCheckOptions
 ): Promise<string> {
   /**
    * Fetches the blob data from the sender address.
@@ -44,6 +45,8 @@ export async function getBlobDataFromSenderAddress(
    */
   // TODO: adapt for >6 blobs => multiple transactions
   // TODO: allow user to choose provider
+  const {emitter, clientId} = options || {emitter: null, clientId: null};
+
   // use wrapped Infura API for getting full transaction-data
   let infuraProvider = new ethers.InfuraProvider(
     'sepolia',
@@ -51,12 +54,12 @@ export async function getBlobDataFromSenderAddress(
   );
 
   // use Alchemy's Transfers API to get fetch historical transactions of an address
-  const config = {
-    apiKey: alchemyAPIKey,
-    network: Network.ETH_SEPOLIA,
-  };
-  const alchemy = new Alchemy(config);
-
+  // const config = {
+  //   apiKey: alchemyAPIKey,
+  //   network: Network.ETH_SEPOLIA,
+  // };
+  // const alchemy = new Alchemy(config);
+  // Alchemy is not working, so we use Moralis instead
   if (!Moralis.Core.isStarted) {
     await Moralis.start({
       apiKey: process.env.MORALIS_API_KEY,
@@ -64,13 +67,12 @@ export async function getBlobDataFromSenderAddress(
     })
   }
 
-
   let transfers;
   let blobVersionedHashes: string | any[] = [];
 
-  // try {
+  try {
     console.log("before getAssetTransfers, "+senderAddress);
-    emitter.emit('progress', {step: 'getAssetTransfers', status: 'started'});
+    emitter?.emit('progress', {clientId: clientId, step: 'getAssetTransfers', status: 'started'});
     // transfers = await alchemy.core
     //   .getAssetTransfers({
     //     fromAddress: senderAddress,
@@ -88,10 +90,10 @@ export async function getBlobDataFromSenderAddress(
     //   throw new Error('No transfers found');
     // }
     console.log("after getAssetTransfers");
-    emitter.emit('progress', {step: 'getAssetTransfers', status: 'completed', additionalMetrics: {transferCount: transfers.result.length}});
+    emitter?.emit('progress', {clientId: clientId, step: 'getAssetTransfers', status: 'completed', additionalMetrics: {transferCount: transfers.result.length}});
     // Retrieve the latest blob transaction and its blobVersionedHash(s)
     let i = 0;
-    emitter.emit('progress', {step: 'getBlobVersionedHashes', status: 'started'});
+    emitter?.emit('progress', {clientId: clientId, step: 'getBlobVersionedHashes', status: 'started'});
     // Account for multiple blobs in a single transaction
     while (blobVersionedHashes.length === 0) {
       const latestTxHash = transfers.result[i]?.hash;
@@ -105,14 +107,13 @@ export async function getBlobDataFromSenderAddress(
         throw new Error('No transactions found for address '+senderAddress);
       }
     }
-    emitter.emit('progress', {step: 'getBlobVersionedHashes', status: 'completed', additionalMetrics: {txHash: transfers.result[i-1]?.hash, blobCount: blobVersionedHashes.length, firstBlobVersionedHash: blobVersionedHashes[0]}});
-
-  // } catch (error) {
-  //   console.error(error);
-  // }
+    emitter?.emit('progress', {clientId: clientId, step: 'getBlobVersionedHashes', status: 'completed', additionalMetrics: {txHash: transfers.result[i-1]?.hash, blobCount: blobVersionedHashes.length, firstBlobVersionedHash: blobVersionedHashes[0]}});
+  } catch (error) {
+    console.error(error);
+  }
 
   // Fetch the blob data using API of choice and convert it back to a string
-  emitter.emit('progress', {step: 'fetchAndConcatBlobData', status: 'started'});
+  emitter?.emit('progress', {clientId: clientId, step: 'fetchAndConcatBlobData', status: 'started'});
   let temp= "";
   for (const blobVersionedHash of blobVersionedHashes) {
     const blobData = await fetch(
@@ -121,10 +122,10 @@ export async function getBlobDataFromSenderAddress(
     // Remove the '0x' prefix and starting/trailing quotation marks
     temp=temp+(blobData.replace(/['"]+/g, '').slice(2));
   }
-  emitter.emit('progress', {step: 'fetchAndConcatBlobData', status: 'completed'});
-  emitter.emit('progress', {step: 'reconstructBlobData', status: 'started'});
+  emitter?.emit('progress', {clientId: clientId, step: 'fetchAndConcatBlobData', status: 'completed'});
+  emitter?.emit('progress', {clientId: clientId, step: 'reconstructBlobData', status: 'started'});
   const blobString = reconstructBlobData(temp);
-  emitter.emit('progress', {step: 'reconstructBlobData', status: 'completed'});
+  emitter?.emit('progress', {clientId: clientId, step: 'reconstructBlobData', status: 'completed'});
   return blobString;
 }
 
