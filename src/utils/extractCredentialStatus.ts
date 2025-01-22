@@ -2,7 +2,7 @@ import {
   CredentialStatus,
   JSONLDVerifiableCredential,
   VerifiableCredentialWithStatus as VerifiableCredential,
-} from '../types/verifiableCredential.ts';
+} from '../types/verifiableCredential';
 
 /**
  * Extracts the credential status from a Verifiable Credential (VC).
@@ -54,5 +54,8 @@ export function extractCredentialStatus(
     throw new Error('Unknown VC format');
   }
 
+  if (!credentialStatus) {
+    throw new Error('Credential status not found');
+  }
   return credentialStatus;
 }

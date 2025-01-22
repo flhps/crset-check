@@ -1,3 +1,3 @@
-export * from './types/verifiableCredential.ts';
-export * from './utils/extractCredentialStatus.ts';
-export * from './lib/StatusCheck.ts';
+export * from './types/verifiableCredential';
+export * from './utils/extractCredentialStatus';
+export * from './lib/StatusCheck';
