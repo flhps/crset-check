@@ -32,7 +32,8 @@
     "clean": "rimraf dist",
     "ci": "npm run build && npm run check-format",
     "check-format": "prettier --write .",
-    "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm"
+    "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "@digitalcredentials/vc": "^9.0.1",
