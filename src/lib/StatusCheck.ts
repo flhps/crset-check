@@ -1,9 +1,9 @@
 import { isAddress } from 'ethers';
+import { APIConfig, StatusCheckOptions } from '../types/config';
+import { VerifiableCredentialWithStatus as VerifiableCredential } from '../types/verifiableCredential';
+import { extractCredentialStatus } from '../utils/extractCredentialStatus';
+import { getBlobDataFromSenderAddress } from '../utils/reader';
 import { fromDataHexString, isInBFC } from 'padded-bloom-filter-cascade';
-import { APIConfig, StatusCheckOptions } from '../types/config.ts';
-import { VerifiableCredentialWithStatus as VerifiableCredential } from '../types/verifiableCredential.ts';
-import { extractCredentialStatus } from '../utils/extractCredentialStatus.ts';
-import { getBlobDataFromSenderAddress } from '../utils/reader.ts';
 
 /**
  * Checks if a Verifiable Credential (VC) has been revoked via bloom filter cascade.
