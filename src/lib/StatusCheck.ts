@@ -50,7 +50,7 @@ export async function isRevoked(
   const credentialId = credentialStatus.id;
 
   // Get account address from CAIP-10 account ID in credential status
-  const accountAddress = credentialId.split(':')[3];
+  const accountAddress = credentialId.split(':').find((part) => isAddress(part));
   emitter?.emit('progress', {
     clientId: clientId,
     step: 'extractPublisherAddress',
