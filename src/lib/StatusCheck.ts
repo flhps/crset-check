@@ -77,7 +77,15 @@ export async function isRevoked(
     step: 'reconstructBFC',
     status: 'started',
   });
-  const [filter, salt] = fromDataHexString(blobData);
+  let [filter, salt] = fromDataHexString(blobData);
+  console.log('Filter:', filter.length);
+  // remove elements of length 0 from filter
+  filter = filter.filter((element) => element.buckets.length > 0);
+  console.log('Filter:', filter.length);
+  //log every element's length
+  for (let i = 0; i < filter.length; i++) {
+    console.log('Element:', filter[i].buckets.length);
+  }
   emitter?.emit('progress', {
     clientId: clientId,
     step: 'reconstructBFC',
