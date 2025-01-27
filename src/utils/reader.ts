@@ -19,13 +19,18 @@ export function reconstructBlobData(data: string) {
   if (data.startsWith('0x')) {
     data = data.slice(2);
   }
-  // Convert hex string to a Uint8Array
-  const byteArray = new Uint8Array(
-    data.match(/.{1,2}/g)!.map((byte: string) => parseInt(byte, 16)),
-  );
-  // Decode the Uint8Array back to a string
-  const decoder = new TextDecoder();
-  return decoder.decode(byteArray);
+  // Remove the '00' padding in every 32-byte chunk
+  let result = '';
+  for (let i = 2; i < data.length; i += 64) {
+    const chunk = data.slice(i, i + 62);
+    result += chunk;
+  }
+  result = '0x' + result;
+  // Pad the result to 128 KB if necessary
+  if (result.length !== 128*1024) {
+    result = result.padEnd(128*1024, '00');
+  }
+  return result;
 }
 
 /**
