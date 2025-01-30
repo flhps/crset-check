@@ -19,18 +19,18 @@ export function reconstructBlobData(data: string) {
   if (data.startsWith('0x')) {
     data = data.slice(2);
   }
-   // Remove the '00' padding in every 32-byte chunk
-   let result = '';
-   for (let i = 2; i < data.length; i += 64) {
-     const chunk = data.slice(i, i + 62);
-     result += chunk;
-   }
-   result = '0x' + result;
-   // Pad the result to 128 KB if necessary
-   if (result.length !== 128*1024) {
-     result = result.padEnd(128*1024, '00');
-   }
-   return result;
+  // Remove the '00' padding in every 32-byte chunk
+  let result = '';
+  for (let i = 2; i < data.length; i += 64) {
+    const chunk = data.slice(i, i + 62);
+    result += chunk;
+  }
+  result = '0x' + result;
+  // Pad the result to 128 KB if necessary
+  if (result.length !== 128*1024) {
+    result = result.padEnd(128*1024, '00');
+  }
+  return result;
 }
 
 /**
