@@ -3,7 +3,6 @@ import { type EventEmitter } from 'events';
 export interface APIConfig {
   infuraApiKey: string;
   moralisApiKey: string;
-  alchemyApiKey: string;
   blobScanUrl: string;
 }
 

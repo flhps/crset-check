@@ -40,7 +40,6 @@
   "dependencies": {
     "@digitalcredentials/vc": "^9.0.1",
     "@digitalcredentials/vc-data-model": "^2.0.0",
-    "alchemy-sdk": "^3.4.7",
     "caip": "^1.1.1",
     "did-jwt-vc": "^4.0.4",
     "dotenv": "^16.4.5",

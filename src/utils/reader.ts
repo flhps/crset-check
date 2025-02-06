@@ -27,8 +27,8 @@ export function reconstructBlobData(data: string) {
   }
   result = '0x' + result;
   // Pad the result to 128 KB if necessary
-  if (result.length !== 128*1024) {
-    result = result.padEnd(128*1024, '00');
+  if (result.length !== 128 * 1024) {
+    result = result.padEnd(128 * 1024, '00');
   }
   return result;
 }
@@ -74,7 +74,6 @@ export async function getBlobDataFromSenderAddress(
     infuraApiKey: ethersProviderAPIKey,
     moralisApiKey,
     blobScanUrl: blobScanAPIUrl,
-    // alchemyApiKey,
   } = apiConfig;
 
   // use wrapped Infura API for getting full transaction-data
@@ -83,18 +82,9 @@ export async function getBlobDataFromSenderAddress(
     ethersProviderAPIKey,
   );
 
-  // use Alchemy's Transfers API to get fetch historical transactions of an address
-  // const config = {
-  //   apiKey: alchemyAPIKey,
-  //   network: Network.ETH_SEPOLIA,
-  // };
-  // const alchemy = new Alchemy(config);
-
-  // Alchemy is not working, so we use Moralis instead
   if (!Moralis.Core.isStarted) {
     await Moralis.start({
       apiKey: moralisApiKey,
-      // ...and any other configuration
     });
   }
 
@@ -108,22 +98,13 @@ export async function getBlobDataFromSenderAddress(
       step: 'getAssetTransfers',
       status: 'started',
     });
-    // transfers = await alchemy.core
-    //   .getAssetTransfers({
-    //     fromAddress: senderAddress,
-    //     toAddress: senderAddress,
-    //     category: [AssetTransfersCategory.EXTERNAL],
-    //     order: SortingOrder.DESCENDING,
-    //     excludeZeroValue: false,
-    //   });
+
     transfers = await Moralis.EvmApi.transaction.getWalletTransactions({
       address: senderAddress,
       chain: EvmChain.SEPOLIA,
       order: 'DESC',
     });
-    // if (transfers.transfers.length === 0) {
-    //   throw new Error('No transfers found');
-    // }
+
     console.log('after getAssetTransfers');
     emitter?.emit('progress', {
       clientId: clientId,

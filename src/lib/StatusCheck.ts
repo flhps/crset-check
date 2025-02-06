@@ -23,8 +23,7 @@ import { fromDataHexString, isInBFC } from 'padded-bloom-filter-cascade';
  * const apiConfig = {
  *   infuraApiKey: 'your-infura-api-key',
  *   moralisApiKey: 'your-moralis-api-key',
- *   alchemyApiKey: 'your-alchemy-api-key',
- *   blobScanUrl: 'your-blob-scan-url',
+ *   blobScanUrl: 'https://api.sepolia.blobscan.com/blob', // or 'https://api.blobscan.com/blob'
  * };
  * const options = {
  *   emitter: new EventEmitter(),
@@ -50,7 +49,9 @@ export async function isRevoked(
   const credentialId = credentialStatus.id;
 
   // Get account address from CAIP-10 account ID in credential status
-  const accountAddress = credentialId.split(':').find((part) => isAddress(part));
+  const accountAddress = credentialId
+    .split(':')
+    .find((part) => isAddress(part));
   emitter?.emit('progress', {
     clientId: clientId,
     step: 'extractPublisherAddress',
