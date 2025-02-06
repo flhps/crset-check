@@ -34,6 +34,7 @@ console.log(isRevoked); // true or false
 
 ## Links and References
 - **[EIP-4844: Shard Blob Transactions](https://eips.ethereum.org/EIPS/eip-4844)**
+- **[W3C Verifiable Credentials Data Model 2.0](https://www.w3.org/TR/vc-data-model-2.0/)**
 - ![arXiv](https://img.shields.io/badge/arXiv-2501.17089-b31b1b.svg) 
   **[CRSet: Non-Interactive Verifiable Credential Revocation with Metadata Privacy for Issuers and Everyone Else](https://arxiv.org/abs/2501.17089)**  
   *Hoops et al., 2025.*  
