@@ -1,9 +1,9 @@
-import { isAddress } from 'ethers';
-import { APIConfig, StatusCheckOptions } from '../types/config';
-import { VerifiableCredentialWithStatus as VerifiableCredential } from '../types/verifiableCredential';
-import { extractCredentialStatus } from '../utils/extractCredentialStatus';
-import { getBlobDataFromSenderAddress } from '../utils/reader';
-import { fromDataHexString, isInBFC } from 'crset-cascade';
+import { isAddress } from "ethers";
+import { APIConfig, StatusCheckOptions } from "../types/config";
+import { VerifiableCredentialWithStatus as VerifiableCredential } from "../types/verifiableCredential";
+import { extractCredentialStatus } from "../utils/extractCredentialStatus";
+import { getBlobDataFromSenderAddress } from "../utils/reader";
+import { fromDataHexString, isInBFC } from "crset-cascade";
 
 /**
  * Checks if a Verifiable Credential (VC) has been revoked via bloom filter cascade.
@@ -39,10 +39,10 @@ export async function isRevoked(
   options?: StatusCheckOptions,
 ): Promise<boolean> {
   const { emitter, clientId } = options || { emitter: null, clientId: null };
-  emitter?.emit('progress', {
+  emitter?.emit("progress", {
     clientId: clientId,
-    step: 'extractPublisherAddress',
-    status: 'started',
+    step: "extractPublisherAddress",
+    status: "started",
   });
   // Check if VC is JSON-LD or JWT, handle accordingly
   const credentialStatus = extractCredentialStatus(vc);
@@ -50,19 +50,19 @@ export async function isRevoked(
 
   // Get account address from CAIP-10 account ID in credential status
   const accountAddress = credentialId
-    .split(':')
+    .split(":")
     .find((part) => isAddress(part));
-  emitter?.emit('progress', {
+  emitter?.emit("progress", {
     clientId: clientId,
-    step: 'extractPublisherAddress',
-    status: 'completed',
+    step: "extractPublisherAddress",
+    status: "completed",
     additionalMetrics: { address: accountAddress },
   });
   // const accountAddress = process.env.ADDRESS;
   if (!isAddress(accountAddress)) {
-    throw new Error('Invalid Ethereum address: ' + accountAddress);
+    throw new Error("Invalid Ethereum address: " + accountAddress);
   } else {
-    console.log('Valid Ethereum address: ' + accountAddress);
+    console.log("Valid Ethereum address: " + accountAddress);
   }
 
   // Get blob data from sender address
@@ -73,36 +73,36 @@ export async function isRevoked(
   );
 
   // Reconstruct bloom filter cascade from blob data
-  emitter?.emit('progress', {
+  emitter?.emit("progress", {
     clientId: clientId,
-    step: 'reconstructBFC',
-    status: 'started',
+    step: "reconstructBFC",
+    status: "started",
   });
   let [filter, salt] = fromDataHexString(blobData);
-  console.log('Filter:', filter.length);
+  console.log("Filter:", filter.length);
   // remove elements of length 0 from filter
   filter = filter.filter((element) => element.buckets.length > 0);
-  console.log('Filter:', filter.length);
+  console.log("Filter:", filter.length);
   //log every element's length
   for (let i = 0; i < filter.length; i++) {
-    console.log('Element:', filter[i].buckets.length);
+    console.log("Element:", filter[i].buckets.length);
   }
-  emitter?.emit('progress', {
+  emitter?.emit("progress", {
     clientId: clientId,
-    step: 'reconstructBFC',
-    status: 'completed',
+    step: "reconstructBFC",
+    status: "completed",
     additionalMetrics: { levelCount: filter.length },
   });
-  emitter?.emit('progress', {
+  emitter?.emit("progress", {
     clientId: clientId,
-    step: 'checkRevocation',
-    status: 'started',
+    step: "checkRevocation",
+    status: "started",
   });
   const isRevoked = !isInBFC(credentialId, filter, salt);
-  emitter?.emit('progress', {
+  emitter?.emit("progress", {
     clientId: clientId,
-    step: 'checkRevocation',
-    status: 'completed',
+    step: "checkRevocation",
+    status: "completed",
     additionalMetrics: { isRevoked: isRevoked },
   });
 

@@ -1,3 +1,3 @@
-export * from './types/verifiableCredential';
-export * from './utils/extractCredentialStatus';
-export * from './lib/StatusCheck';
+export * from "./types/verifiableCredential";
+export * from "./utils/extractCredentialStatus";
+export * from "./lib/StatusCheck";
