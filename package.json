@@ -1,11 +1,11 @@
 {
-  "name": "crset-checker",
+  "name": "crset-check",
   "version": "0.1.0",
   "description": "A library for checking the status of VCs using CRSet.",
   "author": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jfelixh/crset-checker.git"
+    "url": "https://github.com/jfelixh/crset-check.git"
   },
   "license": "MIT",
   "type": "module",

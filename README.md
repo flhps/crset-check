@@ -1,4 +1,4 @@
-# CRSet Checker
+# CRSet Check
 
 A library that verifies W3C Verifiable Credentials' revocation status using CRSet, an EIP-4844 blob-based status list on the Ethereum blockchain.
 
@@ -15,7 +15,7 @@ To use this library, you need to have an **[Infura API key](https://support.infu
 ### Example Usage
 
 ```typescript
-import { isRevoked } from 'bfc-status-check';
+import { isRevoked } from 'crset-check';
 
 const vc: VerifiableCredential = { ... };
 const apiConfig = {
