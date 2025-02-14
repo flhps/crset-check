@@ -3,7 +3,7 @@ import { APIConfig, StatusCheckOptions } from '../types/config';
 import { VerifiableCredentialWithStatus as VerifiableCredential } from '../types/verifiableCredential';
 import { extractCredentialStatus } from '../utils/extractCredentialStatus';
 import { getBlobDataFromSenderAddress } from '../utils/reader';
-import { fromDataHexString, isInBFC } from 'padded-bloom-filter-cascade';
+import { fromDataHexString, isInBFC } from 'crset-cascade';
 
 /**
  * Checks if a Verifiable Credential (VC) has been revoked via bloom filter cascade.

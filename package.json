@@ -1,11 +1,11 @@
 {
-  "name": "bfc-status-check",
+  "name": "crset-checker",
   "version": "1.0.0",
   "description": "A library for checking the status of VCs using BFC-Status.",
   "author": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jfelixh/bfc-status-check.git"
+    "url": "https://github.com/jfelixh/crset-checker.git"
   },
   "license": "MIT",
   "type": "module",
@@ -45,8 +45,8 @@
     "dotenv": "^16.4.5",
     "ethers": "^6.13.4",
     "kzg-wasm": "^0.5.0",
+    "crset-cascade": "github:jfelixh/crset-cascade",
     "moralis": "^2.27.2",
-    "padded-bloom-filter-cascade": "github:jfelixh/padded-bloom-filter-cascade",
     "tsx": "^4.19.2"
   },
   "devDependencies": {

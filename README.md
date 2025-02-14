@@ -40,6 +40,3 @@ console.log(isRevoked); // true or false
   *Hoops et al., 2025.*  
 - ![GitHub](https://img.shields.io/badge/GitHub-padded--bloom--filter--cascade-blue?logo=github)
     **[padded-bloom-filter-cascade](https://github.com/jfelixh/padded-bloom-filter-cascade/blob/main/README.md)**
-- [![IEEE Xplore](https://img.shields.io/badge/IEEE%20Xplore-7958597-blue)](https://ieeexplore.ieee.org/document/7958597) 
-**[CRLite: A Scalable System for Pushing All TLS Revocations to All Browsers](https://ieeexplore.ieee.org/document/7958597)**
-*Larisch et al., 2025.*
