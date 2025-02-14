@@ -1,12 +1,10 @@
-# bfc-status-check
+# CRSet Checker
 
-A library that verifies W3C Verifiable Credentials' revocation status using EIP-4844 blob-based status list on Ethereum blockchain.
+A library that verifies W3C Verifiable Credentials' revocation status using CRSet, an EIP-4844 blob-based status list on the Ethereum blockchain.
 
 ## Overview
 
-Verifiers already have tools to validate the format and signatures of VCs, but the revocation status requires a separate check. This library provides a standalone method to determine whether a VC has been revoked by querying blockchain data (specifically Ethereum).
-
-Padded Bloom Filter Cascade (BFC) is a data structure that allows for efficient, scalable, and privacy-preserving revocation status checks. The BFC is stored on the Ethereum blockchain via blobs and can be queried to determine the revocation status of a VC. For more details, refer to the [links and references](#links-and-references) section.
+Verifiers already have good libraries available to validate the format and signatures of VCs, which do not interfere with the VC's status. This library provides a standalone method to determine whether a VC has been revoked through the CRSet mechanism. For more details, refer to the [links and references](#links-and-references) section.
 
 ## Usage
 

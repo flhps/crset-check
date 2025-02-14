@@ -42,11 +42,11 @@
     "@digitalcredentials/vc": "^9.0.1",
     "@digitalcredentials/vc-data-model": "^2.0.0",
     "caip": "^1.1.1",
+    "crset-cascade": "github:jfelixh/crset-cascade",
     "did-jwt-vc": "^4.0.4",
     "dotenv": "^16.4.5",
     "ethers": "^6.13.4",
     "kzg-wasm": "^0.5.0",
-    "crset-cascade": "github:jfelixh/crset-cascade",
     "moralis": "^2.27.2",
     "tsx": "^4.19.2"
   },
