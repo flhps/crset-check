@@ -156,12 +156,21 @@ export async function getBlobDataFromSenderAddress(
   });
   let temp = "";
   for (const blobVersionedHash of blobVersionedHashes) {
-    const blobData = await fetch(
-      `${blobScanAPIUrl}${blobVersionedHash}/data`,
-    ).then((response) => response.text());
+    console.log("fetching blob data for " + blobVersionedHash + " at " + blobScanAPIUrl + blobVersionedHash + "/data");
+    const response = await fetch(
+      `${blobScanAPIUrl}${blobVersionedHash}/data`
+    );
+
+    if (!response.ok) {
+      const data: any = await response.json();
+      throw new Error(`Failed to fetch blob data: ${data.message}`);
+    }
+
+    const blobData = await response.text();
     // Remove the '0x' prefix and starting/trailing quotation marks
     temp = temp + blobData.replace(/['"]+/g, "").slice(2);
   }
+
   emitter?.emit("progress", {
     clientId: clientId,
     step: "fetchAndConcatBlobData",

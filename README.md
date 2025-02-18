@@ -10,7 +10,7 @@ Verifiers already have good libraries available to validate the format and signa
 
 ### Prerequisites
 
-To use this library, you need to have an **[Infura API key](https://support.infura.io/account/api-keys/create-new-key)**. You also need to have a **[Moralis API key](https://docs.moralis.com/2.0/web3-data-api/evm/get-your-api-key)** to access the blob data. Finally, you need to provide a **blob scan URL** to query the blob data. It looks as follows (for Sepolia testnet): `https://api.sepolia.blobscan.com/blob`. For the mainnet, it would be `https://api.blobscan.com/blob`.
+To use this library, you need to have an **[Infura API key](https://support.infura.io/account/api-keys/create-new-key)**. You also need to have a **[Moralis API key](https://docs.moralis.com/2.0/web3-data-api/evm/get-your-api-key)** to access the blob data. Finally, you need to provide a **blob scan URL** to query the blob data. It looks as follows (for Sepolia testnet): `https://api.sepolia.blobscan.com/blobs`. For the mainnet, it would be `https://api.blobscan.com/blobs`.
 
 ### Example Usage
 
@@ -21,7 +21,7 @@ const vc: VerifiableCredential = { ... };
 const apiConfig = {
     infuraApiKey: 'your-infura-api-key',
     moralisApiKey: 'your-moralis-api-key',
-    blobScanUrl: 'https://api.sepolia.blobscan.com/blob', // or 'https://api.blobscan.com/blob'
+    blobScanUrl: 'https://api.sepolia.blobscan.com/blobs', // or 'https://api.blobscan.com/blobs'
 
 };
 const options = {
