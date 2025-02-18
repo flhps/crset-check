@@ -156,10 +156,16 @@ export async function getBlobDataFromSenderAddress(
   });
   let temp = "";
   for (const blobVersionedHash of blobVersionedHashes) {
-    console.log("fetching blob data for " + blobVersionedHash + " at " + blobScanAPIUrl + blobVersionedHash + "/data");
-    const response = await fetch(
-      `${blobScanAPIUrl}${blobVersionedHash}/data`
+    console.log(
+      "fetching blob data for " +
+        blobVersionedHash +
+        " at " +
+        blobScanAPIUrl +
+        "/" +
+        blobVersionedHash +
+        "/data",
     );
+    const response = await fetch(`${blobScanAPIUrl}/${blobVersionedHash}/data`);
 
     if (!response.ok) {
       const data: any = await response.json();
