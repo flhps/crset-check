@@ -10,11 +10,6 @@ import { APIConfig, StatusCheckOptions } from "../types/config";
  * @returns The original data as a string.
  */
 export function reconstructBlobData(data: string) {
-  /**
-   * Reconstructs the original data from a hex string.
-   * @param data - The hex string to be decoded.
-   * @returns The original data as a string.
-   */
   // Remove the '0x' prefix if it exists (just in case)
   if (data.startsWith("0x")) {
     data = data.slice(2);
@@ -158,12 +153,12 @@ export async function getBlobDataFromSenderAddress(
   for (const blobVersionedHash of blobVersionedHashes) {
     console.log(
       "fetching blob data for " +
-        blobVersionedHash +
-        " at " +
-        blobScanAPIUrl +
-        "/" +
-        blobVersionedHash +
-        "/data",
+      blobVersionedHash +
+      " at " +
+      blobScanAPIUrl +
+      "/" +
+      blobVersionedHash +
+      "/data",
     );
     const response = await fetch(`${blobScanAPIUrl}/${blobVersionedHash}/data`);
 
