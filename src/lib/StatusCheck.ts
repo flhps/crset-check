@@ -58,7 +58,6 @@ export async function isRevoked(
     status: "completed",
     additionalMetrics: { address: accountAddress },
   });
-  // const accountAddress = process.env.ADDRESS;
   if (!isAddress(accountAddress)) {
     throw new Error("Invalid Ethereum address: " + accountAddress);
   } else {

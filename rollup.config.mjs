@@ -29,6 +29,25 @@ const config = [
   {
     input: "src/index.ts",
     output: {
+      file: "dist/index.cjs",
+      format: "cjs",
+      sourcemap: true,
+    },
+    plugins: [
+      typescript({
+        tsconfig: "./tsconfig.json",
+      }),
+      resolve({
+        preferBuiltins: true,
+        extensions: [".js", ".ts"],
+      }),
+      commonjs(),
+      json(),
+    ],
+  },
+  {
+    input: "src/index.ts",
+    output: {
       file: "dist/index.d.ts",
       format: "esm",
     },
