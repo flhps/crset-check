@@ -20,12 +20,7 @@ export function reconstructBlobData(data: string) {
     const chunk = data.slice(i, i + 62);
     result += chunk;
   }
-  result = "0x" + result;
-  // Pad the result to 128 KB if necessary
-  if (result.length !== 128 * 1024) {
-    result = result.padEnd(128 * 1024, "00");
-  }
-  return result;
+  return "0x" + result;
 }
 
 /**
@@ -188,5 +183,7 @@ export async function getBlobDataFromSenderAddress(
     step: "reconstructBlobData",
     status: "completed",
   });
+
+  console.log("Reconstructed blob data: " + blobString);
   return blobString;
 }
