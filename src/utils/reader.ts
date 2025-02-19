@@ -184,6 +184,6 @@ export async function getBlobDataFromSenderAddress(
     status: "completed",
   });
 
-  console.log("Reconstructed blob data: " + blobString);
+  console.log("Reconstructed blob hex string length: " + blobString.length);
   return blobString;
 }
