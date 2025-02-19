@@ -47,6 +47,8 @@ export async function isRevoked(
   // Check if VC is JSON-LD or JWT, handle accordingly
   const credentialStatus = extractCredentialStatus(vc);
   const credentialId = credentialStatus.id;
+  const credentialIdParts = credentialId.split(":");
+  const revocationId = credentialIdParts[credentialIdParts.length - 1];
 
   // Get account address from CAIP-10 account ID in credential status
   const accountAddress = credentialId
@@ -97,7 +99,7 @@ export async function isRevoked(
     step: "checkRevocation",
     status: "started",
   });
-  const isRevoked = !isInBFC(credentialId, filter, salt);
+  const isRevoked = !isInBFC(revocationId, filter, salt);
   emitter?.emit("progress", {
     clientId: clientId,
     step: "checkRevocation",
