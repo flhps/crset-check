@@ -148,12 +148,12 @@ export async function getBlobDataFromSenderAddress(
   for (const blobVersionedHash of blobVersionedHashes) {
     console.log(
       "fetching blob data for " +
-      blobVersionedHash +
-      " at " +
-      blobScanAPIUrl +
-      "/" +
-      blobVersionedHash +
-      "/data",
+        blobVersionedHash +
+        " at " +
+        blobScanAPIUrl +
+        "/" +
+        blobVersionedHash +
+        "/data",
     );
     const response = await fetch(`${blobScanAPIUrl}/${blobVersionedHash}/data`);
 
