@@ -79,6 +79,7 @@ export async function isRevoked(
     step: "reconstructBFC",
     status: "started",
   });
+  // eslint-disable-next-line prefer-const
   let [filter, salt] = fromDataHexString(blobData);
   console.log("Filter:", filter.length);
   // remove elements of length 0 from filter

@@ -15,7 +15,7 @@ describe("reconstructBlobData", () => {
 
   test("should reconstruct to a Bloom filter cascade", () => {
     const blobData = reconstructBlobData(trimmedBlobString);
-    let [filter, salt] = fromDataHexString(blobData);
+    const [filter, salt] = fromDataHexString(blobData);
     expect(salt.length).toBe(256);
     expect(filter.length).toBe(31);
 

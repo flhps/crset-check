@@ -67,7 +67,7 @@ export async function getBlobDataFromSenderAddress(
   } = apiConfig;
 
   // use wrapped Infura API for getting full transaction-data
-  let infuraProvider = new ethers.InfuraProvider(
+  const infuraProvider = new ethers.InfuraProvider(
     "sepolia",
     ethersProviderAPIKey,
   );
@@ -79,7 +79,7 @@ export async function getBlobDataFromSenderAddress(
   }
 
   let transfers;
-  let blobVersionedHashes: string | any[] = [];
+  let blobVersionedHashes: string | string[] = [];
 
   try {
     console.log("before getAssetTransfers, " + senderAddress);
@@ -158,7 +158,7 @@ export async function getBlobDataFromSenderAddress(
     const response = await fetch(`${blobScanAPIUrl}/${blobVersionedHash}/data`);
 
     if (!response.ok) {
-      const data: any = await response.json();
+      const data = await response.json() as { message: string };
       throw new Error(`Failed to fetch blob data: ${data.message}`);
     }
 
