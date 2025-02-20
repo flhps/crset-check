@@ -2,7 +2,10 @@
   "name": "crset-check",
   "version": "0.1.0",
   "description": "A library for checking the status of VCs using CRSet.",
-  "author": "",
+  "author": {
+    "name": "Felix Hoops",
+    "url": "https://github.com/jfelixh"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/jfelixh/crset-check.git"
@@ -43,16 +46,10 @@
     "lint:fix": "eslint --fix"
   },
   "dependencies": {
-    "@digitalcredentials/vc": "^9.0.1",
     "@digitalcredentials/vc-data-model": "^2.0.0",
-    "caip": "^1.1.1",
     "crset-cascade": "github:jfelixh/crset-cascade",
-    "did-jwt-vc": "^4.0.4",
-    "dotenv": "^16.4.5",
     "ethers": "^6.13.4",
-    "kzg-wasm": "^0.5.0",
-    "moralis": "^2.27.2",
-    "tsx": "^4.19.2"
+    "moralis": "^2.27.2"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.16.4",
