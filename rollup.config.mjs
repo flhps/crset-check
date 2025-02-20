@@ -1,36 +1,55 @@
-import commonjs from '@rollup/plugin-commonjs';
-import json from '@rollup/plugin-json';
-import resolve from '@rollup/plugin-node-resolve';
-import typescript from '@rollup/plugin-typescript';
-import dts from 'rollup-plugin-dts';
+import commonjs from "@rollup/plugin-commonjs";
+import json from "@rollup/plugin-json";
+import resolve from "@rollup/plugin-node-resolve";
+import typescript from "@rollup/plugin-typescript";
+import dts from "rollup-plugin-dts";
 
 const config = [
   {
-    input: 'src/index.ts',
+    input: "src/index.ts",
     output: {
-      dir: 'dist',
-      format: 'esm',
+      dir: "dist",
+      format: "esm",
       sourcemap: true,
       preserveModules: true,
-      preserveModulesRoot: 'src',
+      preserveModulesRoot: "src",
     },
     plugins: [
       typescript({
-        tsconfig: './tsconfig.json',
+        tsconfig: "./tsconfig.json",
       }),
       resolve({
         preferBuiltins: true,
-        extensions: ['.js', '.ts'],
+        extensions: [".js", ".ts"],
       }),
       commonjs(),
       json(),
     ],
   },
   {
-    input: 'src/index.ts',
+    input: "src/index.ts",
     output: {
-      file: 'dist/index.d.ts',
-      format: 'esm',
+      file: "dist/index.cjs",
+      format: "cjs",
+      sourcemap: true,
+    },
+    plugins: [
+      typescript({
+        tsconfig: "./tsconfig.json",
+      }),
+      resolve({
+        preferBuiltins: true,
+        extensions: [".js", ".ts"],
+      }),
+      commonjs(),
+      json(),
+    ],
+  },
+  {
+    input: "src/index.ts",
+    output: {
+      file: "dist/index.d.ts",
+      format: "esm",
     },
     plugins: [
       dts({

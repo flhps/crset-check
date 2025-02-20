@@ -2,7 +2,7 @@ import {
   CredentialStatus,
   JSONLDVerifiableCredential,
   VerifiableCredentialWithStatus as VerifiableCredential,
-} from '../types/verifiableCredential';
+} from "../types/verifiableCredential";
 
 /**
  * Extracts the credential status from a Verifiable Credential (VC).
@@ -21,41 +21,46 @@ export function extractCredentialStatus(
 ): CredentialStatus {
   let credentialStatus: CredentialStatus | undefined;
   if (
-    typeof vc === 'object' &&
-    '@context' in vc &&
-    (vc as JSONLDVerifiableCredential)['@context']
+    typeof vc === "object" &&
+    "@context" in vc &&
+    (vc as JSONLDVerifiableCredential)["@context"]
   ) {
     // JSON-LD
     credentialStatus = vc.credentialStatus;
-  } else if (typeof vc === 'string') {
+  } else if (typeof vc === "string") {
     // JWT
-    const jwtParts = vc.split('.');
+    const jwtParts = vc.split(".");
     if (jwtParts.length !== 3) {
-      throw new Error('Invalid JWT');
+      throw new Error("Invalid JWT");
     }
 
     const payloadBase64 = jwtParts[1];
     if (!payloadBase64) {
-      throw new Error('Invalid JWT payload');
+      throw new Error("Invalid JWT payload");
     }
 
     let payload;
     try {
       payload = JSON.parse(atob(payloadBase64));
     } catch (e) {
-      throw new Error('Invalid JWT payload');
+      throw new Error("Invalid JWT payload");
     }
 
     credentialStatus = payload.credentialStatus;
     if (!credentialStatus) {
-      throw new Error('Invalid JWT payload');
+      throw new Error("Invalid JWT payload");
     }
   } else {
-    throw new Error('Unknown VC format');
+    throw new Error("Unknown VC format");
   }
 
   if (!credentialStatus) {
-    throw new Error('Credential status not found');
+    throw new Error("Credential status not found");
   }
+
+  if (credentialStatus.type !== "CRSetEntry") {
+    throw new Error("Unsupported credential status type");
+  }
+
   return credentialStatus;
 }
