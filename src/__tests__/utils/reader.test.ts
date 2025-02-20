@@ -18,10 +18,8 @@ describe("reconstructBlobData", () => {
     const [filter, salt] = fromDataHexString(blobData);
     expect(salt.length).toBe(256);
     expect(filter.length).toBe(31);
-
-    // TODO: replace with actual credentialId
     const credentialId =
-      "eip155:1:0x75793097Cd152180D42695756109B3F5fDD4E42f:ea8826dd1f651e38afed3947ebb4626920d54ae880a074c54818fc86604daefbfe0837c15728be07019028ef04897f6aaea269ce8b02b6de686b588455e785d6";
+      "ea8826dd1f651e38afed3947ebb4626920d54ae880a074c54818fc86604daefbfe0837c15728be07019028ef04897f6aaea269ce8b02b6de686b588455e785d9";
     const isRevoked = !isInBFC(credentialId, filter, salt);
     expect(isRevoked).toBe(false);
   });

@@ -56,10 +56,8 @@ export async function getBlobDataFromSenderAddress(
   apiConfig: APIConfig,
   options?: StatusCheckOptions,
 ): Promise<string> {
-  // TODO: adapt for >6 blobs => multiple transactions
   const { emitter, clientId } = options || { emitter: null, clientId: null };
 
-  // TODO: allow user to choose provider
   const {
     infuraApiKey: ethersProviderAPIKey,
     moralisApiKey,
