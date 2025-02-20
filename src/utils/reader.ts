@@ -82,7 +82,6 @@ export async function getBlobDataFromSenderAddress(
   let blobVersionedHashes: string | string[] = [];
 
   try {
-    console.log("before getAssetTransfers, " + senderAddress);
     emitter?.emit("progress", {
       clientId: clientId,
       step: "getAssetTransfers",
@@ -95,7 +94,6 @@ export async function getBlobDataFromSenderAddress(
       order: "DESC",
     });
 
-    console.log("after getAssetTransfers");
     emitter?.emit("progress", {
       clientId: clientId,
       step: "getAssetTransfers",
@@ -146,15 +144,6 @@ export async function getBlobDataFromSenderAddress(
   });
   let temp = "";
   for (const blobVersionedHash of blobVersionedHashes) {
-    console.log(
-      "fetching blob data for " +
-        blobVersionedHash +
-        " at " +
-        blobScanAPIUrl +
-        "/" +
-        blobVersionedHash +
-        "/data",
-    );
     const response = await fetch(`${blobScanAPIUrl}/${blobVersionedHash}/data`);
 
     if (!response.ok) {
@@ -184,6 +173,5 @@ export async function getBlobDataFromSenderAddress(
     status: "completed",
   });
 
-  console.log("Reconstructed blob hex string length: " + blobString.length);
   return blobString;
 }

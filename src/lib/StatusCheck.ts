@@ -62,8 +62,6 @@ export async function isRevoked(
   });
   if (!isAddress(accountAddress)) {
     throw new Error("Invalid Ethereum address: " + accountAddress);
-  } else {
-    console.log("Valid Ethereum address: " + accountAddress);
   }
 
   // Get blob data from sender address
@@ -81,14 +79,8 @@ export async function isRevoked(
   });
   // eslint-disable-next-line prefer-const
   let [filter, salt] = fromDataHexString(blobData);
-  console.log("Filter:", filter.length);
   // remove elements of length 0 from filter
   filter = filter.filter((element) => element.buckets.length > 0);
-  console.log("Filter:", filter.length);
-  //log every element's length
-  for (let i = 0; i < filter.length; i++) {
-    console.log("Element:", filter[i].buckets.length);
-  }
   emitter?.emit("progress", {
     clientId: clientId,
     step: "reconstructBFC",
