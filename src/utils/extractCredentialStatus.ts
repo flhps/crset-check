@@ -57,5 +57,10 @@ export function extractCredentialStatus(
   if (!credentialStatus) {
     throw new Error("Credential status not found");
   }
+
+  if (credentialStatus.type !== "CRSetEntry") {
+    throw new Error("Unsupported credential status type");
+  }
+
   return credentialStatus;
 }

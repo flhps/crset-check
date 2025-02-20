@@ -5,7 +5,7 @@ import {
 
 export interface CredentialStatus {
   id: string;
-  type: "BFCStatusEntry";
+  type: "CRSetEntry";
   statusPurpose: "revocation";
   statusPublisher: string; // CAIP-10 account ID
 }
