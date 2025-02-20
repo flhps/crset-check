@@ -158,7 +158,7 @@ export async function getBlobDataFromSenderAddress(
     const response = await fetch(`${blobScanAPIUrl}/${blobVersionedHash}/data`);
 
     if (!response.ok) {
-      const data = await response.json() as { message: string };
+      const data = (await response.json()) as { message: string };
       throw new Error(`Failed to fetch blob data: ${data.message}`);
     }
 
