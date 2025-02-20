@@ -32,18 +32,17 @@ emitter.on("progress", (data) => {
 The complete example usage looks as follows:
 
 ```typescript
-import { isRevoked } from 'crset-check';
+import { isRevoked } from "crset-check";
 
 const vc: VerifiableCredential = { ... };
 const apiConfig = {
-    infuraApiKey: 'your-infura-api-key',
-    moralisApiKey: 'your-moralis-api-key',
-    blobScanUrl: 'https://api.sepolia.blobscan.com/blobs', // or 'https://api.blobscan.com/blobs'
-
+  infuraApiKey: "your-infura-api-key",
+  moralisApiKey: "your-moralis-api-key",
+  blobScanUrl: "https://api.sepolia.blobscan.com/blobs", // or "https://api.blobscan.com/blobs"
 };
 const options = {
-    emitter: new EventEmitter(),
-    clientId: 'your-client-id',
+  emitter: new EventEmitter(),
+  clientId: "your-client-id",
 };
 
 const isRevoked = await isRevoked(vc, apiConfig, options);
