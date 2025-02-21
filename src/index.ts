@@ -1,3 +1,3 @@
 export * from "./types/verifiableCredential";
-export * from "./utils/extractCredentialStatus";
+export * from "./types/config";
 export * from "./lib/StatusCheck";
