@@ -1,4 +1,4 @@
-import { fromDataHexString, isInBFC } from "crset-cascade";
+import { CRSetCascade } from "crset-cascade";
 import { reconstructBlobData } from "../../utils/reader";
 import testBlob from "./testblob.json";
 
@@ -15,12 +15,14 @@ describe("reconstructBlobData", () => {
 
   test("should reconstruct to a Bloom filter cascade", () => {
     const blobData = reconstructBlobData(trimmedBlobString);
-    const [filter, salt] = fromDataHexString(blobData);
-    expect(salt.length).toBe(256);
-    expect(filter.length).toBe(31);
+    const cascade = CRSetCascade.fromDataHexString(blobData);
+    expect(cascade.getSalt().length).toBe(64);
+    expect(cascade.getDepth()).toBe(29);
     const credentialId =
-      "ea8826dd1f651e38afed3947ebb4626920d54ae880a074c54818fc86604daefbfe0837c15728be07019028ef04897f6aaea269ce8b02b6de686b588455e785d9";
-    const isRevoked = !isInBFC(credentialId, filter, salt);
-    expect(isRevoked).toBe(false);
+      "aed78b3df6b85c6eb87e0ae2bd93ec5f9cfd7e23b9a43e6196d6a614bb930d4e";
+    expect(cascade.has(credentialId)).toBe(true);
+    const credentialId2 =
+      "4384112c6bfe937078e6315dfe76a29464fc63b0480ebba0c0a21a1f18da4350";
+    expect(cascade.has(credentialId2)).toBe(false);
   });
 });
