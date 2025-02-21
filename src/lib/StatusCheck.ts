@@ -3,10 +3,10 @@ import { APIConfig, StatusCheckOptions } from "../types/config";
 import { VerifiableCredentialWithStatus as VerifiableCredential } from "../types/verifiableCredential";
 import { extractCredentialStatus } from "../utils/extractCredentialStatus";
 import { getBlobDataFromSenderAddress } from "../utils/reader";
-import { fromDataHexString, isInBFC } from "crset-cascade";
+import { CRSetCascade } from "crset-cascade";
 
 /**
- * Checks if a Verifiable Credential (VC) has been revoked via bloom filter cascade.
+ * Checks if a Verifiable Credential (VC) has been revoked via CRSet.
  *
  * @param vc - The Verifiable Credential to check.
  * @param apiConfig - The API configuration for making network requests.
@@ -44,7 +44,7 @@ export async function isRevoked(
     step: "extractPublisherAddress",
     status: "started",
   });
-  // Check if VC is JSON-LD or JWT, handle accordingly
+  // extraction handles both JSON-LD and JWT formatted VCs
   const credentialStatus = extractCredentialStatus(vc);
   const credentialId = credentialStatus.id;
   const credentialIdParts = credentialId.split(":");
@@ -64,35 +64,34 @@ export async function isRevoked(
     throw new Error("Invalid Ethereum address: " + accountAddress);
   }
 
-  // Get blob data from sender address
   const blobData = await getBlobDataFromSenderAddress(
     accountAddress,
     apiConfig,
     options,
   );
 
-  // Reconstruct bloom filter cascade from blob data
   emitter?.emit("progress", {
     clientId: clientId,
     step: "reconstructBFC",
     status: "started",
   });
-  // eslint-disable-next-line prefer-const
-  let [filter, salt] = fromDataHexString(blobData);
-  // remove elements of length 0 from filter
-  filter = filter.filter((element) => element.buckets.length > 0);
+
+  const cascade = CRSetCascade.fromDataHexString(blobData);
+
   emitter?.emit("progress", {
     clientId: clientId,
     step: "reconstructBFC",
     status: "completed",
-    additionalMetrics: { levelCount: filter.length },
+    additionalMetrics: { levelCount: cascade.getDepth() },
   });
   emitter?.emit("progress", {
     clientId: clientId,
     step: "checkRevocation",
     status: "started",
   });
-  const isRevoked = !isInBFC(revocationId, filter, salt);
+
+  const isRevoked = cascade.has(revocationId);
+
   emitter?.emit("progress", {
     clientId: clientId,
     step: "checkRevocation",
