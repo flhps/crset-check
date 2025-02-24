@@ -90,7 +90,7 @@ export async function isRevoked(
     status: "started",
   });
 
-  const isRevoked = cascade.has(revocationId);
+  const isRevoked = !cascade.has(revocationId);
 
   emitter?.emit("progress", {
     clientId: clientId,
