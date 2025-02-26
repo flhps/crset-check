@@ -51,6 +51,10 @@ console.log(isRevoked); // true or false
 
 Note that the `clientId` is optional and can be used to identify one of multiple clients/users in the emitted events.
 
+## Acknowledgments
+
+We thank the Ethereum Foundation for funding this work with an Ethereum Academic Grant under reference number FY24-1545.
+
 ## Links and References
 
 - **[EIP-4844: Shard Blob Transactions](https://eips.ethereum.org/EIPS/eip-4844)**
