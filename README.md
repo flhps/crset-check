@@ -15,7 +15,7 @@ To use this library, you need to have an **[Infura API key](https://support.infu
 ### Installation
 
 ```bash
-npm install github:jfelixh/bfc-status-check
+npm install github:flhps/bfc-status-check
 ```
 
 ### Example Usage
