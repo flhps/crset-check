@@ -15,7 +15,8 @@ To use this library, you need to have an **[Infura API key](https://support.infu
 ### Installation
 
 ```bash
-npm install github:flhps/bfc-status-check
+npm install github:flhps/crset-check
+pnpm add github:flhps/crset-check
 ```
 
 ### Example Usage
@@ -63,4 +64,4 @@ We thank the Ethereum Foundation for funding this work with an Ethereum Academic
   **[CRSet: Non-Interactive Verifiable Credential Revocation with Metadata Privacy for Issuers and Everyone Else](https://arxiv.org/abs/2501.17089)**  
   _Hoops et al., 2025._
 - ![GitHub](https://img.shields.io/badge/GitHub-padded--bloom--filter--cascade-blue?logo=github)
-  **[crset-cascade](https://github.com/jfelixh/crset-cascade/)**
+  **[crset-cascade](https://github.com/flhps/crset-cascade/)**
