@@ -3,8 +3,10 @@ import json from "@rollup/plugin-json";
 import resolve from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
+import { builtinModules } from "module";
 
 const config = [
+  // ESM Build
   {
     input: "src/index.ts",
     output: {
@@ -26,6 +28,7 @@ const config = [
       json(),
     ],
   },
+  // CJS Build
   {
     input: "src/index.ts",
     output: {
@@ -45,6 +48,7 @@ const config = [
       json(),
     ],
   },
+  // Types
   {
     input: "src/index.ts",
     output: {
@@ -59,6 +63,7 @@ const config = [
         },
       }),
     ],
+    external: [...builtinModules, ...builtinModules.map((m) => `node:${m}`)],
   },
 ];
 

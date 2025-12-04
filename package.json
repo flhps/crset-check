@@ -1,14 +1,14 @@
 {
   "name": "crset-check",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A library for checking the status of VCs using CRSet.",
   "author": {
     "name": "Felix Hoops",
-    "url": "https://github.com/jfelixh"
+    "url": "https://github.com/flhps"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jfelixh/crset-check.git"
+    "url": "https://github.com/fhlps/crset-check.git"
   },
   "license": "MIT",
   "type": "module",
@@ -47,32 +47,33 @@
   },
   "dependencies": {
     "@digitalcredentials/vc-data-model": "^2.0.0",
-    "crset-cascade": "github:jfelixh/crset-cascade",
-    "ethers": "^6.13.4",
+    "@moralisweb3/common-evm-utils": "^2.27.2",
+    "crset-cascade": "github:flhps/crset-cascade",
+    "ethers": "^6.16.0",
     "moralis": "^2.27.2"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.16.4",
-    "@eslint/js": "^9.20.0",
-    "@rollup/plugin-commonjs": "^28.0.2",
+    "@eslint/js": "^9.39.1",
+    "@rollup/plugin-commonjs": "^28.0.9",
     "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^16.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.2",
-    "@types/jest": "^29.5.12",
-    "@types/node": "^22.9.0",
-    "eslint": "^9.20.1",
-    "globals": "^16.0.0",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.19.1",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
     "jest": "^29.7.0",
-    "prettier": "^3.3.3",
+    "prettier": "^3.7.4",
     "rimraf": "^5.0.10",
-    "rollup": "^4.31.0",
-    "rollup-plugin-dts": "^6.1.1",
-    "ts-jest": "^29.1.2",
+    "rollup": "^4.53.3",
+    "rollup-plugin-dts": "^6.3.0",
+    "ts-jest": "^29.4.6",
     "ts-jest-resolver": "^2.0.1",
     "ts-node": "^10.9.2",
     "tslib": "^2.8.1",
-    "typescript": "^5.7.3",
-    "typescript-eslint": "^8.24.1"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.1"
   }
 }
