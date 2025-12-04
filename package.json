@@ -1,14 +1,14 @@
 {
   "name": "crset-check",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A library for checking the status of VCs using CRSet.",
   "author": {
     "name": "Felix Hoops",
-    "url": "https://github.com/jfelixh"
+    "url": "https://github.com/flhps"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jfelixh/crset-check.git"
+    "url": "https://github.com/fhlps/crset-check.git"
   },
   "license": "MIT",
   "type": "module",
@@ -47,7 +47,8 @@
   },
   "dependencies": {
     "@digitalcredentials/vc-data-model": "^2.0.0",
-    "crset-cascade": "github:jfelixh/crset-cascade",
+    "@moralisweb3/common-evm-utils": "^2.27.2",
+    "crset-cascade": "github:flhps/crset-cascade",
     "ethers": "^6.13.4",
     "moralis": "^2.27.2"
   },
