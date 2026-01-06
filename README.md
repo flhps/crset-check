@@ -61,7 +61,6 @@ We thank the Ethereum Foundation for funding this work with an Ethereum Academic
 - **[EIP-4844: Shard Blob Transactions](https://eips.ethereum.org/EIPS/eip-4844)**
 - **[W3C Verifiable Credentials Data Model 1.1](https://www.w3.org/TR/vc-data-model/)**
 - ![arXiv](https://img.shields.io/badge/arXiv-2501.17089-b31b1b.svg)
-  **[CRSet: Non-Interactive Verifiable Credential Revocation with Metadata Privacy for Issuers and Everyone Else](https://arxiv.org/abs/2501.17089)**  
-  _Hoops et al., 2025._
+  **[CRSet: Private Non-Interactive Verifiable Credential Revocation](https://arxiv.org/abs/2501.17089)**
 - ![GitHub](https://img.shields.io/badge/GitHub-padded--bloom--filter--cascade-blue?logo=github)
   **[crset-cascade](https://github.com/flhps/crset-cascade/)**
